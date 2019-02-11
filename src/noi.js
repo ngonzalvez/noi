@@ -1,0 +1,172 @@
+const prompt = require('prompt');
+const rl = require('readline');
+const { exec } = require('child_process');
+const fs = require('fs');
+const path = require('path');
+
+const FileTemplate = require('./FileTemplate');
+
+
+prompt.message = '';
+
+const noi = {
+  /**
+   * Run the noi command-line tool.
+   */
+  cli(cmd) {
+    const cmdPath = cmd.replace(/\./, '/');
+    const configPath = `/home/ngonzalvez/.noi/${cmdPath}/config.js`;
+
+    if (!fs.existsSync(configPath)) {
+      console.log('No configuration file found for the requeste command');
+      process.exit();
+    }
+
+    const config = require(configPath);
+    prompt.get(config.params, (err, params) => {
+      config.run(params, noi);
+    });
+  },
+
+  /**
+   * Run a noi interpreter.
+   */
+  repl() {
+    if (noi.rl === undefined) {
+      noi.rl = rl.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+    }
+
+    noi.rl.question('> ', input => {
+      try {
+        eval(input);
+      } catch(err) {
+        if (err) {
+          console.error(err);
+        }
+      } finally {
+        noi.repl();
+      }
+    });
+  },
+
+  /**
+   * Create a new file with the given template.
+   *
+   * @param {string}   filePath  path for the new file.
+   * @param {FileTemplate} template  the template for the new file.
+   */
+  file(filePath, content) {
+    noi.dir(path.dirname(filePath));
+    fs.writeFileSync(filePath, content);
+  },
+
+
+  /**
+   * Create a new directory.
+   *
+   * @param {string} dirPath   the path to the new directory.
+   */
+  dir(dirPath) {
+    try {
+      if (!this.exists(dirPath)) {
+        fs.mkdirSync(dirPath);
+      }
+    } catch(err) {
+      console.log(err);
+      noi.dir(path.dirname(dirPath));
+      noi.dir(dirPath);
+    }
+  },
+
+  exists(path) {
+    return fs.existsSync(path);
+  },
+
+  /**
+   * Append the given line to the file.
+   *
+   * @param {string} filePath  path to the file to be modified.
+   * @param {string} line      the line to be appended.
+   */
+  line(filePath, line) {
+    fs.appendFileSync(filePath, line);
+  },
+
+  /**
+   * Create a new template with the contents of the given file and with the
+   * given params.
+   *
+   * @param {string} filePath   path to the template file.
+   * @param {object} params     parameters for rendering the template.
+   *
+   * @return {FileTemplate} the template instance.
+   */
+  template(filePath, params) {
+    return new FileTemplate(filePath, params).render();
+  },
+
+  /**
+   * Execute the given command.
+   *
+   * @param {string} cmd  A command to be executed.
+   * @return {number} exit status.
+   */
+  async exec(cmd) {
+    return new Promise((resolve, reject) => {
+      exec(cmd, (error, stdout, stderr) => {
+        if (error) {
+          reject(error);
+        }
+
+        resolve(stdout, stderr);
+      });
+    });
+  },
+
+  /**
+   * Change the current working directory to the given path.
+   *
+   * @param {string} dir  A valid path to an existing directory.
+   */
+  cd(dir) {
+    process.chdir(dir);
+    return noi;
+  },
+
+  /**
+   * Create the given directory.
+   *
+   * @param {string} dirPath  path to the directory to be created.
+   */
+  mkdir(dirPath) {
+    noi
+      .exec(`mkdir -p ${dirPath}`)
+      .catch(err => {
+        if (err) {
+          console.error(err);
+        }
+      });
+  },
+
+  /**
+   * Copy the given files into the destination path.
+   *
+   * @param {string} src files or directories to copy.
+   * @param {string} dst path to destination directory.
+   */
+  cp(src, dst) {
+    noi
+      .exec(`cp -r ${src} ${dst}`)
+      .catch(err => {
+        if (err) {
+          console.error(err);
+        }
+      });
+  },
+};
+
+
+module.exports = noi;

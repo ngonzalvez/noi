@@ -1,0 +1,19 @@
+{
+  "name": "noijs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/noi.js",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {
+    "prompt": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

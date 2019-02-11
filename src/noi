@@ -1,0 +1,11 @@
+#!/usr/bin/node
+const noi = require('./noi.js');
+const cmd = process.argv[2];
+
+
+if (cmd) {
+    noi.cli(cmd, process.argv.slice(3));
+} else {
+    noi.repl();
+}
+
