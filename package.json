@@ -2,7 +2,9 @@
   "name": "noijs",
   "version": "1.0.0",
   "description": "",
-  "main": "src/noi.js",
+  "bin": {
+    "noi": "src/noi"
+  },
   "directories": {
     "example": "examples"
   },
