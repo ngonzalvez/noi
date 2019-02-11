@@ -1,7 +1,7 @@
 {
-  "name": "noijs",
+  "name": "noi.js",
   "version": "1.0.2",
-  "description": "",
+  "description": "Simple scaffolding tool",
   "bin": {
     "noi": "src/noi"
   },
@@ -11,11 +11,6 @@
   "dependencies": {
     "prompt": "^1.0.0"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }
