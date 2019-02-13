@@ -1,6 +1,6 @@
 const prompt = require('prompt');
 const rl = require('readline');
-const { exec } = require('child_process');
+const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -59,8 +59,7 @@ const noi = {
    * @param {FileTemplate} template  the template for the new file.
    */
   file(filePath, content) {
-    noi.dir(path.dirname(filePath));
-    fs.writeFileSync(filePath, content);
+    fs.writeFileSync(filePath, content, { flag: 'w' });
   },
 
 
@@ -116,7 +115,7 @@ const noi = {
    */
   async exec(cmd) {
     return new Promise((resolve, reject) => {
-      exec(cmd, (error, stdout, stderr) => {
+      execSync(cmd, (error, stdout, stderr) => {
         if (error) {
           reject(error);
         }
@@ -141,14 +140,8 @@ const noi = {
    *
    * @param {string} dirPath  path to the directory to be created.
    */
-  mkdir(dirPath) {
-    noi
-      .exec(`mkdir -p ${dirPath}`)
-      .catch(err => {
-        if (err) {
-          console.error(err);
-        }
-      });
+  async mkdir(dirPath) {
+    await noi.exec(`mkdir -p ${dirPath}`);
   },
 
   /**

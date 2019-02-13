@@ -1,7 +1,8 @@
 {
-  "name": "@ngonzalvez/noijs",
+  "name": "noijs",
   "version": "1.2.0",
   "description": "Simple scaffolding tool",
+  "main": "src/noi.js",
   "bin": {
     "noi": "src/noi"
   },
