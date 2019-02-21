@@ -15,10 +15,11 @@ const noi = {
    */
   cli(cmd) {
     const cmdPath = cmd.replace(/\./, '/');
-    const configPath = `~/.noi/${cmdPath}/config.js`;
+    const home = process.env.HOME || process.env.USER_PROFILE;
+    const configPath = `${home}/.noi/${cmdPath}/config.js`;
 
     if (!fs.existsSync(configPath)) {
-      console.log('No configuration file found for the requeste command');
+      console.log('No configuration file found for the requested command');
       process.exit();
     }
 
