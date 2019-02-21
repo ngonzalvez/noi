@@ -15,7 +15,7 @@ const noi = {
    */
   cli(cmd) {
     const cmdPath = cmd.replace(/\./, '/');
-    const configPath = `/home/ngonzalvez/.noi/${cmdPath}/config.js`;
+    const configPath = `~/.noi/${cmdPath}/config.js`;
 
     if (!fs.existsSync(configPath)) {
       console.log('No configuration file found for the requeste command');
