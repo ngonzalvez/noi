@@ -1,11 +1,12 @@
-#!/usr/bin/node
-const noi = require('./noi.js');
+#!/usr/bin/env sh
+_=0// "exec" "/usr/bin/env" "node" "--no-warnings" "$0" "$@"
+ 
+
+const noi = require("./noi.js");
 const cmd = process.argv[2];
 
-
 if (cmd) {
-    noi.cli(cmd, process.argv.slice(3));
+  noi.cli(cmd, process.argv.slice(3));
 } else {
-    noi.repl();
+  noi.repl();
 }
-

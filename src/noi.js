@@ -1,30 +1,47 @@
-const prompt = require('prompt');
-const rl = require('readline');
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+const prompt = require("prompt");
+const rl = require("readline");
+const { execSync } = require("child_process");
+const fs = require("fs");
+const path = require("path");
+const changeCase = require("change-case");
 
-const FileTemplate = require('./FileTemplate');
+const FileTemplate = require("./FileTemplate");
 
-
-prompt.message = '';
+prompt.message = "";
 
 const noi = {
+  changeCase: changeCase,
+
   /**
    * Run the noi command-line tool.
    */
   cli(cmd) {
-    const cmdPath = cmd.replace(/\./, '/');
-    const home = process.env.HOME || process.env.USER_PROFILE;
-    const configPath = `${home}/.noi/${cmdPath}/config.js`;
+    const configPath = path.join(
+      process.cwd(),
+      ".noi",
+      ...cmd.split(","),
+      "config.js"
+    );
+    let didFindConfig = false;
 
-    if (!fs.existsSync(configPath)) {
-      console.log('No configuration file found for the requested command');
+    while (process.cwd() !== "/") {
+      if (fs.existsSync(configPath)) {
+        didFindConfig = true;
+        break;
+      }
+
+      process.chdir("../");
+    }
+
+    if (!didFindConfig) {
+      console.log(
+        "No configuration file found for the requested command. Make sure you have noi templates defined and that you are in the right directory."
+      );
       process.exit();
     }
 
     const config = require(configPath);
-    prompt.get(config.params, (err, params) => {
+    return prompt.get(config.params, (err, params) => {
       config.run(params, noi);
     });
   },
@@ -40,10 +57,10 @@ const noi = {
       });
     }
 
-    noi.rl.question('> ', input => {
+    noi.rl.question("> ", (input) => {
       try {
         eval(input);
-      } catch(err) {
+      } catch (err) {
         if (err) {
           console.error(err);
         }
@@ -60,9 +77,8 @@ const noi = {
    * @param {FileTemplate} template  the template for the new file.
    */
   file(filePath, content) {
-    fs.writeFileSync(filePath, content, { flag: 'w' });
+    fs.writeFileSync(filePath, content, { flag: "w" });
   },
-
 
   /**
    * Create a new directory.
@@ -74,7 +90,7 @@ const noi = {
       if (!this.exists(dirPath)) {
         fs.mkdirSync(dirPath);
       }
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       noi.dir(path.dirname(dirPath));
       noi.dir(dirPath);
@@ -152,15 +168,12 @@ const noi = {
    * @param {string} dst path to destination directory.
    */
   cp(src, dst) {
-    noi
-      .exec(`cp -r ${src} ${dst}`)
-      .catch(err => {
-        if (err) {
-          console.error(err);
-        }
-      });
+    noi.exec(`cp -r ${src} ${dst}`).catch((err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
   },
 };
-
 
 module.exports = noi;
