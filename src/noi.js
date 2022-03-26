@@ -90,7 +90,7 @@ const noi = {
   dir(dirPath) {
     try {
       if (!this.exists(dirPath)) {
-        fs.mkdirSync(dirPath, {recursive: true});
+        fs.mkdirSync(dirPath, { recursive: true });
       }
     } catch (err) {
       console.log(err);
