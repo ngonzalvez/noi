@@ -16,15 +16,17 @@ const noi = {
    * Run the noi command-line tool.
    */
   cli(cmd) {
-    const configPath = path.join(
-      process.cwd(),
-      ".noi",
-      ...cmd.split(","),
-      "config.js"
-    );
+    let configPath;
     let didFindConfig = false;
 
     while (process.cwd() !== "/") {
+      configPath = path.join(
+        process.cwd(),
+        ".noi",
+        ...cmd.split(","),
+        "config.js"
+      );
+
       if (fs.existsSync(configPath)) {
         didFindConfig = true;
         break;
@@ -88,12 +90,10 @@ const noi = {
   dir(dirPath) {
     try {
       if (!this.exists(dirPath)) {
-        fs.mkdirSync(dirPath);
+        fs.mkdirSync(dirPath, {recursive: true});
       }
     } catch (err) {
       console.log(err);
-      noi.dir(path.dirname(dirPath));
-      noi.dir(dirPath);
     }
   },
 
