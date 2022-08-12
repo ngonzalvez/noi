@@ -57,17 +57,23 @@ const noi = {
     const templates = new Set();
 
     while (process.cwd() !== "/") {
-      if (!fs.existsSync(noiDirectory)) continue;
+      if (fs.existsSync(noiDirectory)) {
+        fs.readdirSync(noiDirectory, { withFileTypes: true }).forEach(
+          (dirent) => {
+            if (dirent.isDirectory()) templates.add(dirent.name);
+          }
+        );
+      }
 
-      fs.readdirSync(noiDirectory, { withFileTypes: true }).forEach(
-        (dirent) => {
-          if (dirent.isDirectory()) templates.add(dirent.name);
-        }
-      );
+      process.chdir("../");
     }
 
-    console.log("Available templates:");
-    templates.forEach((templateName) => console.log(templateName));
+    if (templates.size) {
+      console.log("Available templates:");
+      templates.forEach((templateName) => console.log(templateName));
+    } else {
+      console.log("No templates found");
+    }
   },
 
   /**
