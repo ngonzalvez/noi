@@ -53,10 +53,11 @@ const noi = {
   },
 
   ls() {
-    const noiDirectory = path.join(process.cwd(), ".noi");
     const templates = new Set();
 
     while (process.cwd() !== "/") {
+      const noiDirectory = path.join(process.cwd(), ".noi");
+
       if (fs.existsSync(noiDirectory)) {
         fs.readdirSync(noiDirectory, { withFileTypes: true }).forEach(
           (dirent) => {
