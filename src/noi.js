@@ -57,6 +57,8 @@ const noi = {
     const templates = new Set();
 
     while (process.cwd() !== "/") {
+      if (!fs.existsSync(noiDirectory)) continue;
+
       fs.readdirSync(noiDirectory, { withFileTypes: true }).forEach(
         (dirent) => {
           if (dirent.isDirectory()) templates.add(dirent.name);
