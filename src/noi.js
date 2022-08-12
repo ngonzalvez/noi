@@ -16,6 +16,10 @@ const noi = {
    * Run the noi command-line tool.
    */
   cli(cmd) {
+    if (cmd === "ls") {
+      return noi.ls();
+    }
+
     let configPath;
     let didFindConfig = false;
 
@@ -46,6 +50,22 @@ const noi = {
     return prompt.get(config.params, (err, params) => {
       config.run(params, noi);
     });
+  },
+
+  ls() {
+    const noiDirectory = path.join(process.cwd(), ".noi");
+    const templates = new Set();
+
+    while (process.cwd() !== "/") {
+      fs.readdirSync(noiDirectory, { withFileTypes: true }).forEach(
+        (dirent) => {
+          if (dirent.isDirectory()) templates.add(dirent.name);
+        }
+      );
+    }
+
+    console.log("Available templates:");
+    templates.forEach((templateName) => console.log(templateName));
   },
 
   /**
@@ -82,6 +102,10 @@ const noi = {
     fs.writeFileSync(filePath, content, { flag: "w" });
   },
 
+  fileFromTemplate({ dest, template, data }) {
+    noi.file(dest, noi.template(template, data));
+  },
+
   /**
    * Create a new directory.
    *
@@ -89,7 +113,7 @@ const noi = {
    */
   dir(dirPath) {
     try {
-      if (!this.exists(dirPath)) {
+      if (!noi.exists(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true });
       }
     } catch (err) {
