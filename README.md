@@ -56,7 +56,7 @@ The file structure for a noi template looks something like this:
             |__ component.template
 ```
 
-The `templates` directory should contain one template for each file that this noi config will create. In this case, we simply want it to create the `MyComponent.tsx` and `MyComponent.less` files.
+The `templates` directory should contain one template for each file this noi config will create. In this case, we simply want it to create the `MyComponent.tsx` file.
 
 The `config.js` file allows you to define wizzard-like prompts for the user to enter information, like the component name and any other value you may need to render your template.
 
@@ -66,7 +66,7 @@ module.exports = {
   params: {
     properties: {
       componentName: {
-        description: 'Enter a name for the component (e.g. LoginForm)`,
+        description: 'Enter a name for the component (e.g. LoginForm)',
         required: true
       }
     }
@@ -127,7 +127,7 @@ const MyComponent: FC<{% componentName %}Props> = ({ className }) => {
 }
 ```
 
-That's it, we're done defining our first noit template.
+That's it, we're done defining our first noi template.
 
 Now if you run `noi ls` you should see:
 ```bash
