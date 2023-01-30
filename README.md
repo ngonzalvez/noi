@@ -15,7 +15,7 @@ import {FC} from 'react';
 import classNames from 'classnames';
 
 interface MyComponentProps {
-	className: string;
+  className: string;
 }
 
 const MyComponent: FC<MyComponentProps> = ({ className }) => {
@@ -109,7 +109,7 @@ import classNames from 'classnames';
 import './{% componentName %}.less';
 
 interface {% componentName %}Props {
-	className: string;
+  className: string;
 }
 
 const MyComponent: FC<{% componentName %}Props> = ({ className }) => {
