@@ -1,7 +1,7 @@
 # noijs
 `noijs` is a library that helps you scaffold files using templates you define. Its aim is to be a simple solution, that allows you to define a template in a couple of minutes and automate some of the work you have to do as a software developer.
 
-### Why using it?
+## Why using it?
 I'm super lazy, and I hate doing repetitive work. If it can be automated, it should be. This is the main motivation behind `noijs`. I realized that there were some things that I always had to do pretty much every day at work. Let me give you a few examples:
 
 - Creating components when working on a react app.
@@ -33,7 +33,7 @@ Thing is, it is really boring writing all this stuff, mostly when you're startin
 
 That's why I created `noijs`, to be able to automate this process and just focus on writing the business logic.
 
-### Installation
+## Installation
 You wanna try it? Simply run:
 ```bash
 npm install -g noijs
