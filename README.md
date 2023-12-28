@@ -1,18 +1,24 @@
-# noijs
-`noijs` is a library that helps you scaffold files using templates you define. Its aim is to be a simple solution, that allows you to define a template in a couple of minutes and automate some of the work you have to do as a software developer.
+<h3 align="center">noijs</h3>
+<p align="center">Scaffold your project components using your own templates.</p>
+<h1></h1>
 
-## Why using it?
-I'm super lazy, and I hate doing repetitive work. If it can be automated, it should be. This is the main motivation behind `noijs`. I realized that there were some things that I always had to do pretty much every day at work. Let me give you a few examples:
+&nbsp;
+#### About the Project
+[I'm super lazy](https://ncode.uy/being-lazy-is-ok), and I hate repetitive work. **If it can be automated, it should be**. This is the main motivation behind `noijs`. 
 
-- Creating components when working on a react app.
-- Implementing new endpoints when working in the backend.
-- Integrating said components to request the data from those endpoints.
+At work you'll find yourself:
+- Creating **components** when working on a react app.
+- Implementing new **endpoints** when working on an API.
+- Data functions
+- Shell scripts
+- Scheduled jobs
 
-If you think of it, usually these files have a very well defined structure. For example, a react component would look something like:
+If you think of it, usually these pieces of code have a very **well defined structure**. For example, a react component would look something like:
 
 ```tsx
 import {FC} from 'react';
 import classNames from 'classnames';
+import styles from './MyComponent.module.scss';
 
 interface MyComponentProps {
   className: string;
@@ -27,14 +33,13 @@ const MyComponent: FC<MyComponentProps> = ({ className }) => {
 }
 ```
 
-Your component structure may differ a little bit, but the basic structure of all components is always the same. The same concept applies to endpoints, scheduled jobs, automated scripts you may have, and so on.
+And it also needs stylesheet and tests files. Creating the directory structure and every file by hand, and **writing all this stuff** over and over **is a waste of time**. Even more when starting a project from scratch, because **you'll be doing this a lot**.
 
-Thing is, it is really boring writing all this stuff, mostly when you're starting a project, because you'll be doing this a lot.
+`noijs` allows you to **automate** this process, so that you can **focus on writing the business logic**.
 
-That's why I created `noijs`, to be able to automate this process and just focus on writing the business logic.
-
-## Installation
-You wanna try it? Simply run:
+&nbsp;
+#### Installation
+Wanna try it? Simply run:
 ```bash
 npm install -g noijs
 ```
@@ -44,7 +49,8 @@ noi
 ```
 And you should see `No templates found` in the screen. If you see it, then your can move on to the next section.
 
-## Creating templates
+&nbsp;
+#### Creating templates
 Let's create a template for a react component. Start by creating a `.noi` directory somewhere. You can add it in your project root if these templates are project-specific, or you can add them to `~/.noi` and they'll be available to all projects.
 
 The file structure for a noi template looks something like this:
@@ -135,7 +141,8 @@ Available templates:
 react-component
 ```
 
-## Executing a noi config
+&nbsp;
+#### Executing a noi config
 Now that you have a noi config, let's execute it. Simply `cd` into the directory containing the `components` folder and run:
 
 ```bash
@@ -151,31 +158,58 @@ Simply enter a name for the component and press `Enter`. Now, if you run `ls com
 
 Now you have automated the scaffolding of a simple react component. In this example we simply created one file, but in real-life examples you may be creating several files, appending some content to existing files, and so on.
 
-## Utility Functions
+&nbsp;
+#### Utility Functions
 
-#### noi.file(filePath, content)
+```Javascript
+noi.file(filePath, content)
+```
 Creates a new file with the given content.
 
-#### noi.fileFromTemplate({ template, data, dest })
+&nbsp;
+```Javascript
+noi.fileFromTemplate({ template, data, dest })
+```
 Renders the template at the given `template` path using the `data` object as context. It then creates a new file in the `dest` path with the rendered template.
 
-#### noi.exists(path)
+&nbsp;
+```Javascript
+noi.exists(path)
+```
 Returns a boolean indicating whether the file exists or not.
 
-#### noi.appendToFile(filePath, content)
+&nbsp;
+```Javascript
+noi.appendToFile(filePath, content)
+```
 Appends the given content to the end of the file.
 
-#### noi.appendTemplateToFile({ template, data, file })
+&nbsp;
+```Javascript
+noi.appendTemplateToFile({ template, data, file })
+```
 Renders the `template` using the given `data` and appends it at the end of the given `file` path.
 
-#### noi.exec(cmd)
+&nbsp;
+```Javascript
+noi.exec(cmd)
+```
 [Async] Executes the given command. It returns a promise that resolves to the `stdout`.
 
-#### noi.cd(path)
+&nbsp;
+```Javascript
+noi.cd(path)
+```
 Changes the current working directory to the given path.
 
-#### noi.mkdir(path)
+&nbsp;
+```Javascript
+noi.mkdir(path)
+```
 [Async] Creates a new directory at the given path.
 
-#### noi.cp(src, dest) 
+&nbsp;
+```Javascript
+noi.cp(src, dest)
+```
 [Async] Copies the `src` file to the `dest` path.
